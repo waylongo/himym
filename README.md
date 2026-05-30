@@ -1,5 +1,7 @@
 # HIMYM 中文粉丝拼贴墙
 
+[在线访问](https://waylongo.github.io/himym/)
+
 一个关于《How I Met Your Mother》的中文粉丝拼贴墙，像贴在 MacLaren's 酒吧里的记忆板。这里不做百科式复述，而是把角色、九季时间线、经典物件、关系变化和最终争议放在同一面墙上。
 
 页面包含全剧剧透。
