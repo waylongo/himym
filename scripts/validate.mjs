@@ -10,6 +10,8 @@ const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
 const manifest = imageManifest;
 const requiredFields = ["src", "alt", "credit", "section", "type", "fallback"];
 const failures = [];
+const implementationCopyPattern =
+  /公开|图片源|加载失败|回退|fallback|manifest|占位图|真实剧集|真实剧照|原创|TVMaze|Fandom|可替换|生成图片墙|视觉位/;
 
 if (!Array.isArray(manifest)) {
   failures.push("Image manifest module did not export an array.");
@@ -32,6 +34,12 @@ if (!Array.isArray(manifest)) {
       failures.push(`${item.id} alt text should be Chinese.`);
     }
 
+    for (const field of ["alt", "caption", "credit"]) {
+      if (implementationCopyPattern.test(item[field] || "")) {
+        failures.push(`${item.id} ${field} contains implementation/source copy.`);
+      }
+    }
+
     if (!item.fallback || !item.fallback.motif || !item.fallback.title) {
       failures.push(`${item.id} fallback needs motif and title.`);
     }
@@ -45,6 +53,10 @@ if (!Array.isArray(manifest)) {
 
 if (!html.includes("含全剧剧透")) {
   failures.push("Spoiler warning text is missing from index.html.");
+}
+
+if (implementationCopyPattern.test(html)) {
+  failures.push("index.html contains implementation/source copy.");
 }
 
 if (html.includes("clip-grid") || mainScript.includes("youtube-nocookie.com/embed") || mainScript.includes("<iframe")) {
